@@ -30,7 +30,7 @@ SYSTEM_PROMPT = """
 You classify news headlines into exactly one of these four categories:
 World, Sports, Business, or Sci/Tech.
 
-If a headline fits multiple categories, choose the most fitting one.
+If a headline fits more than one category, choose the one that fits the headline the best.
 Only return the single best-fitting category.
 """
 
