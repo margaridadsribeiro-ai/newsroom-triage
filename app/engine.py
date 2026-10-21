@@ -193,6 +193,9 @@ class Trace:
     passages: list = field(default_factory=list)
     raw_answer: str = ""
     confidence: float = 0.0
+    second_answer: str = ""
+    second_confidence: float = 0.0
+    agreement: Optional[bool] = None
     guardrails: list = field(default_factory=list)
     blocked: bool = False
     final: str = ""
@@ -229,9 +232,20 @@ def classify(headline):
         tr.confidence = 1.0
     else:
         if tr.mode == "live":
-            cat, conf = _groq_classify(headline, config.SYSTEM_PROMPT, tr.passages)
+            classify_once = lambda: _groq_classify(
+                headline, config.SYSTEM_PROMPT, tr.passages
+            )
         else:
-            cat, conf = _demo_classify(headline)
+            classify_once = lambda: _demo_classify(headline)
+
+        cat, conf = classify_once()
+
+        if conf < config.CONFIDENCE_FLOOR:
+            second_cat, second_conf = classify_once()
+            tr.second_answer = second_cat
+            tr.second_confidence = second_conf
+            tr.agreement = cat == second_cat
+
         tr.final, tr.confidence = cat, conf
 
     tr.raw_answer = tr.final
