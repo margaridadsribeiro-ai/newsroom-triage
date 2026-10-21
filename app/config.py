@@ -27,10 +27,7 @@
 # -----------------------------------------------------------------------------
 
 SYSTEM_PROMPT = """
-You sort news headlines into these four categories, and only these: World, Sports, Business, or Sci/Tech.
-
-If a headline fits more than one category, choose the category that fits that headline the best.
-Only return the single best-fitting category.
+You sort news. Say which category it is.
 """
 
 
@@ -68,7 +65,7 @@ ALLOWED_CATEGORIES = ["World", "Sports", "Business", "Sci/Tech"]
 
 # If the model is less sure than this, the app says it does not know
 # instead of guessing. 0.0 means never refuse. 1.0 means always refuse.
-CONFIDENCE_FLOOR = 0.6
+CONFIDENCE_FLOOR = 0.0
 
 
 # -----------------------------------------------------------------------------
