@@ -74,3 +74,25 @@ def test_a_blocked_answer_never_reaches_the_user():
         assert tr.final == engine.SAFE
     finally:
         config.CONFIDENCE_FLOOR = original
+
+
+def test_low_confidence_triggers_second_classification(monkeypatch):
+    monkeypatch.setattr(config, "CONFIDENCE_FLOOR", 0.60)
+    calls = []
+
+    def fake_classify(text):
+        calls.append(text)
+        if len(calls) == 1:
+            return "Business", 0.40
+        return "Sci/Tech", 0.80
+
+    monkeypatch.setattr(engine, "live_mode", lambda: False)
+    monkeypatch.setattr(engine, "_demo_classify", fake_classify)
+
+    tr = engine.classify("A headline about a company")
+
+    assert len(calls) == 2
+    assert tr.second_answer == "Sci/Tech"
+    assert tr.second_confidence == 0.80
+    assert tr.agreement is False
+
