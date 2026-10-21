@@ -27,7 +27,11 @@
 # -----------------------------------------------------------------------------
 
 SYSTEM_PROMPT = """
-You sort news. Say which category it is.
+You classify news headlines into exactly one of these four categories:
+World, Sports, Business, or Sci/Tech.
+
+If a headline fits multiple categories, choose the most fitting one.
+Only return the single best-fitting category.
 """
 
 
