@@ -28,6 +28,7 @@
 
 SYSTEM_PROMPT = """
 You sort news. Say which category it is.
+You sort news headlines into these four categories, and only these: World, Sports, Business, or Sci/Tech.
 """
 
 
